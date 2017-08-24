@@ -8,6 +8,7 @@
 
 namespace pamfax\api;
 use Yii;
+use yii\helpers\Json;
 use yii\base\InvalidConfigException;
 use yii\base\NotSupportedException;
 
@@ -128,7 +129,20 @@ class Api extends \yii\base\Object {
                         $useCache : $this->useCache;
 
         // run request:
-        return \ApiClient::StaticApi( $command, $params, $useCache );
+        $response = \ApiClient::StaticApi( $command, $params, $useCache );
+
+        // parse response:
+        switch( $this->_formatMode ) {
+            case \ApiClient::API_MODE_JSON:
+                $response = Json::decode( $response );
+                break;
+            case \ApiClient::API_MODE_XML:
+                $response = \ApiClient::ParseXmlResult( $response );
+                break;
+            default: break;
+        }
+
+        return $response;
 
     }
 
