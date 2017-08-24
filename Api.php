@@ -9,32 +9,47 @@
 namespace byfax\api;
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\base\NotSupportedException;
 
 class Api extends \yii\base\Object {
 
-    // type of included classes:
+    /** @var string $type - type of included classes:*/
     public $type = 'static';
-    // api application account:
+    /** @var string $key - active api key: */
     public $key;
-    // api secret password:
+    /** @var string $secret - active api secret: */
     public $secret;
-    // active url
+    /** @var string $url -  active url */
     public $url;
 
-    // active profile for api:
+    /** @var string $activeProfile - active profile for api: */
     public $activeProfile = 'default';
-    // list of available profiles with keys, urls and secrets:
+    /** @var array $profiles list of available profiles with keys, urls and secrets: */
     public $profiles = [];
 
-    // template for profile configure:
+    /** @var boolean $useCache - use cache in api requests by default */
+    public $useCache = false;
+
+    /** @var array $_profileTemplate -  template for profile configure: */
     private $_profileTemplate = [ 'key', 'secret', 'url' ];
 
-    // output format mode:
+    /** @var int $_formatMode -  output format mode: */
     private $_formatMode;
 
-    // api runtime status:
+    /** @var int $_status -  api runtime status: */
     private $_status = 0;
 
+    /** @var array $_map - api full map */
+    private $_map;
+
+    const MAP_KEY = 'api-map';
+    const MAP_COMMAND = 'Map';
+
+    /**
+     * @inheritdoc
+     *
+     * @throws InvalidConfigException
+     */
     public function init() {
 
         $this->profileConfigure();
@@ -53,12 +68,24 @@ class Api extends \yii\base\Object {
 
     }
 
+    /**
+     *
+     * Set api response format mode
+     *
+     * @param int $mode
+     * @param bool $global
+     */
     public function setFormatMode( $mode = \ApiClient::API_MODE_JSON, $global = false ) {
         $this->_formatMode = $mode;
         if( $global )
             $GLOBALS['PAMFAX_API_MODE'] = $this->_formatMode;
     }
 
+    /**
+     * Prepare api before request
+     *
+     * @return $this
+     */
     public function start() {
 
         if( $this->_status > 0 )
@@ -75,10 +102,88 @@ class Api extends \yii\base\Object {
 
     }
 
+    /**
+     * Run api request
+     *
+     * @param string $command
+     * @param array $params
+     * @param null $useCache
+     * @return array|bool|mixed|string
+     * @throws NotSupportedException
+     */
+    public function request( string $command, array $params = [], $useCache = null ) {
+
+        // validate command and params before request:
+        if( !$this->validateRequest( $command, $params ) )
+            // todo throw more informative message
+            throw new NotSupportedException(
+                "Command $command which this params not supported by Byfax API"
+            );
+
+        // prepare environments before request:
+        $this->start();
+
+        // check cache flag:
+        $useCache = ( !is_null( $useCache ) && is_bool( $useCache ) )?
+                        $useCache : $this->useCache;
+
+        // run request:
+        return \ApiClient::StaticApi( $command, $params, $useCache );
+
+    }
+
+    /**
+     * Retrieve api map
+     *
+     * @return array|bool|mixed|string
+     */
+    public function map() {
+
+        if( !empty( $this->_map ) )
+            return $this->_map;
+
+        if( Yii::$app->cache->exists( self::MAP_KEY ) ) {
+            $this->_map = Yii::$app->cache->exists( self::MAP_KEY );
+            return $this->_map;
+        }
+
+        $map = $this->request( self::MAP_COMMAND );
+
+        // todo validate response here before map caching
+
+        Yii::$app->cache->set( self::MAP_KEY, $map );
+        return $this->_map = $map;
+
+    }
+
+    /**
+     * Validate api command and params before request
+     *
+     * @param string $command
+     * @param array $params
+     * @return bool
+     */
+    private function validateRequest( string $command, array $params ) {
+
+        return ( empty( $command ) )? false : true; // todo validate by api full map
+
+    }
+
+    /**
+     * Validate api profile for ready to use
+     *
+     * @return bool
+     */
     private function validateProfile() {
         return !( empty( $this->key ) || empty( $this->secret ) || empty( $this->url ) );
     }
 
+    /**
+     * Configure api profile before use
+     *
+     * @return $this
+     * @throws InvalidConfigException
+     */
     private function profileConfigure() {
 
         if( empty( $this->activeProfile ) )
@@ -114,10 +219,16 @@ class Api extends \yii\base\Object {
 
     }
 
+    /**
+     * Initialize api libs by static classes
+     */
     private function useStatic() {
         foreach( glob(dirname(__FILE__)."/static/*") as $f ) require_once( $f );
     }
 
+    /**
+     * Initialize api libs by instance classes
+     */
     private function useInstance() {
         foreach( glob(dirname(__FILE__)."/instance/*") as $f ) require_once( $f );
     }
