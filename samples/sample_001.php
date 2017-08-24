@@ -1,6 +1,6 @@
 <?php
 // include the PamFax API client and set your credentials
-require_once('pamfax_api.php');
+require_once(__DIR__ . '/../pamfax_api.php');
 $GLOBALS['PAMFAX_API_URL']         = $CONFIG['pamfax']['api_uri'];
 $GLOBALS['PAMFAX_API_APPLICATION'] = "<your API key here>";
 $GLOBALS['PAMFAX_API_SECRET_WORD'] = "<your API secret word here>";

@@ -1,0 +1,19 @@
+{
+  "name"        : "byfax/api",
+  "version"     : "1.0.0",
+  "description" : "ByFax API Yii2 Extension",
+  "keywords"    : [ "yii2", "byfax", "api" ],
+  "license"     : "CC-0",
+  "require"     : {
+    "yiisoft/yii2" : "*"
+  },
+  "type"        : "yii2-extension",
+  "autoload"    : {
+    "psr-4" : {
+      "byfax\\api\\" : ""
+    }
+  },
+  "extra"       : {
+    "bootstrap" : "byfax\\api\\Bootstrap"
+  }
+}
