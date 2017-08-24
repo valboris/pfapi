@@ -14,30 +14,21 @@ class Api extends \yii\base\Object {
     // type of included classes:
     public $type = 'static';
     // api application account:
-    public $application;
+    public $key;
     // api secret password:
     public $secret;
-    // mode of api - diff mods use diff urls:
-    public $mode = 'sandbox';
-    // api urls for diff mods:
-    public $urls = [];
-
-    public function __construct( $config  = [] ) {
-
-        if( empty( $config['application'] ) || empty( $config['secret'] ) )
-            throw new InvalidConfigException(
-                "This fields is required for Byfax API configure: application, secret."
-            );
-
-        parent::__construct( $config );
-    }
+    // active url
+    public $url;
+    // active mode of api - diff mods use diff urls:
+    public $activeMode = 'default';
+    // list of available mods with keys, urls and secrets:
+    public $mods = [];
+    // template for mode configure:
+    private $modeTemplate = [ 'key', 'secret', 'url' ];
 
     public function init() {
 
-        if( empty( $this->urls[ $this->mode ] ) )
-            throw new InvalidConfigException(
-                "ByFax API url not found for mode '$this->mode'."
-            );
+        $this->activeModeConfigure();
 
         switch( $this->type ) {
             case 'static': $this->useStatic(); break;
@@ -48,6 +39,45 @@ class Api extends \yii\base\Object {
                 );
             break;
         }
+    }
+
+    private function validateMode() {
+        return !( empty( $this->key ) || empty( $this->secret ) || empty( $this->url ) );
+    }
+
+    private function activeModeConfigure() {
+
+        if( empty( $this->activeMode ) )
+            if( !$this->validateMode() ) {
+                throw new InvalidConfigException(
+                    "ByFax API config required key, secret, and url fields or activeMode config."
+                );
+            } else {
+                $this->activeMode = 'default';
+                return $this;
+            }
+
+        if( empty( $this->mods[ $this->activeMode ] ) )
+            if( !$this->validateMode() ) {
+                throw new InvalidConfigException(
+                    "ByFax API config for mode '$this->activeMode' not found!"
+                );
+            } else
+                return $this;
+
+        $mode = $this->mods[ $this->activeMode ];
+
+        foreach( $this->modeTemplate as $key ) {
+            if( !empty( $mode[ $key ] ) )
+                $this->$key = $mode[ $key ];
+            if( empty( $this->$key ) )
+                throw new InvalidConfigException(
+                    "ByFax API '$key' config not found for active mode '$this->activeMode'!"
+                );
+        }
+
+        return $this;
+
     }
 
     private function useStatic() {
