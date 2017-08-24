@@ -6,7 +6,7 @@
  * Time: 13.39
  */
 
-namespace byfax\api;
+namespace pamfax\api;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\NotSupportedException;

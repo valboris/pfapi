@@ -6,7 +6,7 @@
  * Time: 12.50
  */
 
-namespace byfax\api;
+namespace pamfax\api;
 
 use yii\base\BootstrapInterface;
 

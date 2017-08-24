@@ -1,8 +1,8 @@
 {
-  "name"        : "byfax/api",
+  "name"        : "pamfax/api",
   "version"     : "2.0.0",
-  "description" : "ByFax API Yii2 Extension",
-  "keywords"    : [ "yii2", "byfax", "api" ],
+  "description" : "PamFax API Yii2 Extension",
+  "keywords"    : [ "yii2", "pamfax", "api" ],
   "license"     : "CC-0",
   "require"     : {
     "yiisoft/yii2" : "*"
@@ -10,10 +10,10 @@
   "type"        : "yii2-extension",
   "autoload"    : {
     "psr-4" : {
-      "byfax\\api\\" : ""
+      "pamfax\\api\\" : ""
     }
   },
   "extra"       : {
-    "bootstrap" : "byfax\\api\\Bootstrap"
+    "bootstrap" : "pamfax\\api\\Bootstrap"
   }
 }
