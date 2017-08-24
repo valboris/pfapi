@@ -1,6 +1,6 @@
 {
   "name"        : "byfax/api",
-  "version"     : "1.0.0",
+  "version"     : "1.1.0",
   "description" : "ByFax API Yii2 Extension",
   "keywords"    : [ "yii2", "byfax", "api" ],
   "license"     : "CC-0",
