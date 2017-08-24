@@ -7,6 +7,7 @@
  */
 
 namespace byfax\api;
+use Yii;
 use yii\base\InvalidConfigException;
 
 class Api extends \yii\base\Object {
@@ -19,16 +20,21 @@ class Api extends \yii\base\Object {
     public $secret;
     // active url
     public $url;
-    // active mode of api - diff mods use diff urls:
-    public $activeMode = 'default';
-    // list of available mods with keys, urls and secrets:
-    public $mods = [];
-    // template for mode configure:
-    private $modeTemplate = [ 'key', 'secret', 'url' ];
+
+    // active profile for api:
+    public $activeProfile = 'default';
+    // list of available profiles with keys, urls and secrets:
+    public $profiles = [];
+
+    // template for profile configure:
+    private $_profileTemplate = [ 'key', 'secret', 'url' ];
+
+    // output format mode:
+    private $_formatMode;
 
     public function init() {
 
-        $this->activeModeConfigure();
+        $this->profileConfigure();
 
         switch( $this->type ) {
             case 'static': $this->useStatic(); break;
@@ -39,40 +45,57 @@ class Api extends \yii\base\Object {
                 );
             break;
         }
+
+        $this->setFormatMode();
+
     }
 
-    private function validateMode() {
+    public function setFormatMode( $mode = \ApiClient::API_MODE_JSON ) {
+        $this->_formatMode = $mode;
+    }
+
+    public function start() {
+
+        $GLOBALS['PAMFAX_API_URL'] = $this->url;
+        $GLOBALS['PAMFAX_API_APPLICATION'] = $this->key;
+        $GLOBALS['PAMFAX_API_SECRET_WORD'] = $this->secret;
+        $GLOBALS['PAMFAX_API_MODE'] = $this->_formatMode;
+        $GLOBALS['PAMFAX_API_USERTOKEN'] = Yii::$app->session['UserToken'];
+
+    }
+
+    private function validateProfile() {
         return !( empty( $this->key ) || empty( $this->secret ) || empty( $this->url ) );
     }
 
-    private function activeModeConfigure() {
+    private function profileConfigure() {
 
-        if( empty( $this->activeMode ) )
-            if( !$this->validateMode() ) {
+        if( empty( $this->activeProfile ) )
+            if( !$this->validateProfile() ) {
                 throw new InvalidConfigException(
-                    "ByFax API config required key, secret, and url fields or activeMode config."
+                    "ByFax API config required key, secret, and url fields or active profile config."
                 );
             } else {
-                $this->activeMode = 'default';
+                $this->activeProfile = 'default';
                 return $this;
             }
 
-        if( empty( $this->mods[ $this->activeMode ] ) )
-            if( !$this->validateMode() ) {
+        if( empty( $this->mods[ $this->activeProfile ] ) )
+            if( !$this->validateProfile() ) {
                 throw new InvalidConfigException(
-                    "ByFax API config for mode '$this->activeMode' not found!"
+                    "ByFax API config for profile '$this->activeProfile' not found!"
                 );
             } else
                 return $this;
 
-        $mode = $this->mods[ $this->activeMode ];
+        $mode = $this->profiles[ $this->activeProfile ];
 
-        foreach( $this->modeTemplate as $key ) {
+        foreach($this->_profileTemplate as $key ) {
             if( !empty( $mode[ $key ] ) )
                 $this->$key = $mode[ $key ];
             if( empty( $this->$key ) )
                 throw new InvalidConfigException(
-                    "ByFax API '$key' config not found for active mode '$this->activeMode'!"
+                    "ByFax API '$key' config not found for profile '$this->activeProfile'!"
                 );
         }
 
