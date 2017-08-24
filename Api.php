@@ -13,16 +13,16 @@ class Api extends \yii\base\Object {
 
     // type of included classes:
     public $type = 'static';
-    // api application account
+    // api application account:
     public $application;
-    // api secret password
+    // api secret password:
     public $secret;
-    // mode of api - diff mods use diff urls;
+    // mode of api - diff mods use diff urls:
     public $mode = 'sandbox';
-    // api urls for diff mods;
+    // api urls for diff mods:
     public $urls = [];
 
-    public function __construct( $config ) {
+    public function __construct( $config  = [] ) {
 
         if( empty( $config['application'] ) || empty( $config['secret'] ) )
             throw new InvalidConfigException(
