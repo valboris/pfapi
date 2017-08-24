@@ -32,6 +32,9 @@ class Api extends \yii\base\Object {
     // output format mode:
     private $_formatMode;
 
+    // api runtime status:
+    private $_status = 0;
+
     public function init() {
 
         $this->profileConfigure();
@@ -50,17 +53,25 @@ class Api extends \yii\base\Object {
 
     }
 
-    public function setFormatMode( $mode = \ApiClient::API_MODE_JSON ) {
+    public function setFormatMode( $mode = \ApiClient::API_MODE_JSON, $global = false ) {
         $this->_formatMode = $mode;
+        if( $global )
+            $GLOBALS['PAMFAX_API_MODE'] = $this->_formatMode;
     }
 
     public function start() {
+
+        if( $this->_status > 0 )
+            return $this;
 
         $GLOBALS['PAMFAX_API_URL'] = $this->url;
         $GLOBALS['PAMFAX_API_APPLICATION'] = $this->key;
         $GLOBALS['PAMFAX_API_SECRET_WORD'] = $this->secret;
         $GLOBALS['PAMFAX_API_MODE'] = $this->_formatMode;
         $GLOBALS['PAMFAX_API_USERTOKEN'] = Yii::$app->session['UserToken'];
+
+        $this->_status = 1;
+        return $this;
 
     }
 
@@ -80,7 +91,7 @@ class Api extends \yii\base\Object {
                 return $this;
             }
 
-        if( empty( $this->mods[ $this->activeProfile ] ) )
+        if( empty( $this->profiles[ $this->activeProfile ] ) )
             if( !$this->validateProfile() ) {
                 throw new InvalidConfigException(
                     "ByFax API config for profile '$this->activeProfile' not found!"
