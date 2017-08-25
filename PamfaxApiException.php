@@ -11,6 +11,9 @@ use yii\base\Exception;
 
 class PamfaxApiException extends Exception {
 
+    /** @var mixed $responseCode  */
+    public $responseCode;
+
     const DEFAULT_MESSAGE = "Pamfax API response with non comment error";
 
     /**
@@ -30,7 +33,11 @@ class PamfaxApiException extends Exception {
     public function __construct( $response = self::DEFAULT_MESSAGE, $code = 0, \Throwable $previous = null ) {
 
         $message = ( !empty( $response['message'] ) )? $response['message']: $response;
-        $code = ( !empty( $response['code'] ) )? $response['code'] : $code;
+        if( !empty( $response['code'] ) ) {
+            $this->responseCode = $response['code'];
+            if( is_int( (int) $this->responseCode ) )
+                $code = (int) $this->responseCode;
+        }
         return parent::__construct( $message, $code, $previous );
 
     }
