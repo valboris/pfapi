@@ -34,8 +34,10 @@ class Api extends \yii\base\Object {
     /** @var array $_profileTemplate -  template for profile configure: */
     private $_profileTemplate = [ 'key', 'secret', 'url' ];
 
-    /** @var int $_formatMode -  output format mode: */
-    private $_formatMode;
+    /** @var string $responseFormat -  public output format type: */
+    public $responseFormat = 'json';
+    /** @var int $_responseFormatCode -  private output format code: */
+    private $_responseFormatCode;
 
     /** @var int $_status -  api runtime status: */
     private $_status = 0;
@@ -65,21 +67,8 @@ class Api extends \yii\base\Object {
             break;
         }
 
-        $this->setFormatMode();
+        $this->setResponseFormatCode();
 
-    }
-
-    /**
-     *
-     * Set api response format mode
-     *
-     * @param int $mode
-     * @param bool $global
-     */
-    public function setFormatMode( $mode = \ApiClient::API_MODE_JSON, $global = false ) {
-        $this->_formatMode = $mode;
-        if( $global )
-            $GLOBALS['PAMFAX_API_MODE'] = $this->_formatMode;
     }
 
     /**
@@ -95,7 +84,7 @@ class Api extends \yii\base\Object {
         $GLOBALS['PAMFAX_API_URL'] = $this->url;
         $GLOBALS['PAMFAX_API_APPLICATION'] = $this->key;
         $GLOBALS['PAMFAX_API_SECRET_WORD'] = $this->secret;
-        $GLOBALS['PAMFAX_API_MODE'] = $this->_formatMode;
+        $GLOBALS['PAMFAX_API_MODE'] = $this->_responseFormatCode;
         $GLOBALS['PAMFAX_API_USERTOKEN'] = Yii::$app->session['UserToken'];
 
         $this->_status = 1;
@@ -129,18 +118,12 @@ class Api extends \yii\base\Object {
                         $useCache : $this->useCache;
 
         // run request:
-        $response = \ApiClient::StaticApi( $command, $params, $useCache );
-
+        $raw = \ApiClient::StaticApi( $command, $params, $useCache );
         // parse response:
-        switch( $this->_formatMode ) {
-            case \ApiClient::API_MODE_JSON:
-                $response = Json::decode( $response );
-                break;
-            case \ApiClient::API_MODE_XML:
-                $response = \ApiClient::ParseXmlResult( $response );
-                break;
-            default: break;
-        }
+        $response = $this->parseResponse( $raw );
+        // check for error:
+        if( !empty( $response['type'] ) && $response['type'] == 'error' )
+            throw new PamfaxApiException( $response );
 
         return $response;
 
@@ -168,6 +151,58 @@ class Api extends \yii\base\Object {
         Yii::$app->cache->set( self::MAP_KEY, $map );
         return $this->_map = $map;
 
+    }
+
+    /**
+     * Parse api response to configured format:
+     *
+     * @param string $raw
+     * @return array|mixed
+     * @throws PamfaxApiException
+     */
+    private function parseResponse( string $raw ) {
+
+        switch( $this->_responseFormatCode ) {
+            case \ApiClient::API_MODE_JSON:
+                $raw = Json::decode( $raw );
+                $response = ( !empty( $raw['result'] ) )?
+                    $raw[ 'result' ]: $raw;
+                break;
+            case \ApiClient::API_MODE_XML:
+                $response = \ApiClient::ParseXmlResult( $raw );
+                break;
+            case \ApiClient::API_MODE_OBJECT:
+                $response = $raw;
+                break;
+            default:
+                throw new PamfaxApiException("Invalid response format code" );
+                break;
+        }
+        return $response;
+
+    }
+
+    /**
+     * Set response format code from config field
+     *
+     * @throws NotSupportedException
+     */
+    private function setResponseFormatCode() {
+
+        switch( $this->responseFormat ) {
+            case 'json':
+                $this->_responseFormatCode = \ApiClient::API_MODE_JSON;
+                break;
+            case 'xml':
+                $this->_responseFormatCode = \ApiClient::API_MODE_XML;
+                break;
+            case 'object':
+                $this->_responseFormatCode = \ApiClient::API_MODE_OBJECT;
+                break;
+            default:
+                throw new NotSupportedException( "Not supported response format type: $this->responseFormat" );
+                break;
+        }
     }
 
     /**
