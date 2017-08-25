@@ -178,6 +178,11 @@ class Api extends \yii\base\Object {
                 throw new PamfaxApiException("Invalid response format code" );
                 break;
         }
+
+        // fix api bug with empty type in error:
+        if( !empty( $response['code'] ) && $response['code'] == '500' && empty( $response['type'] ) )
+            $response['type'] = 'error';
+
         return $response;
 
     }
