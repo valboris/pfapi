@@ -55,6 +55,7 @@ class Api extends \yii\base\Object {
     const ACTION_CHECK_UNIQUE = 'UserInfo/ValidateNewUsername';
     const ACTION_PROFILE = 'UserInfo/ListProfiles';
 
+    const CODE_SUCCESS = 'success';
     const CODE_INVALID_PASSWORD = 'bad_password';
     const CODE_USER_ALREADY_EXIST = 'user_email_already_exist';
 
@@ -165,7 +166,9 @@ class Api extends \yii\base\Object {
         // check result type field not empty:
         if( !empty( $result['code'] ) && empty( $result['type'] ) )
             switch( $result['code'] ) {
-                case '500' : $result['type'] = 'error'; break;
+                case '500' :
+                case '403' :
+                    $result['type'] = 'error'; break;
                 case 'success' : $result['type'] = true; break;
                 default:
                     throw new PamfaxApiException( 'Result type field required!' );
