@@ -32,7 +32,8 @@ class PamfaxApiException extends Exception {
      */
     public function __construct( $response = self::DEFAULT_MESSAGE, $code = 0, \Throwable $previous = null ) {
 
-        $message = ( !empty( $response['message'] ) )? $response['message']: $response;
+        $message = ( !empty( $response['message'] ) )? $response['message']:
+            is_string( $response )? $response : self::DEFAULT_MESSAGE;
         if( !empty( $response['code'] ) ) {
             $this->responseCode = $response['code'];
             if( is_int( (int) $this->responseCode ) )

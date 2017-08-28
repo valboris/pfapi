@@ -171,7 +171,7 @@ class Api extends \yii\base\Object {
             }
 
         // check result for error:
-        if( $result['type'] == 'error' )
+        if( $result['type'] === 'error' )
             throw new PamfaxApiException( $result );
 
     }
