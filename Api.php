@@ -121,11 +121,41 @@ class Api extends \yii\base\Object {
         $raw = \ApiClient::StaticApi( $command, $params, $useCache );
         // parse response:
         $response = $this->parseResponse( $raw );
-        // check for error:
-        if( !empty( $response['type'] ) && $response['type'] == 'error' )
-            throw new PamfaxApiException( $response );
+        // check and unset response result:
+        $this->checkResult( $response );
 
         return $response;
+
+    }
+
+    /**
+     * Check and unset response result
+     *
+     * @param $response
+     * @throws PamfaxApiException
+     */
+    private function checkResult( &$response ) {
+
+        // check result field not empty:
+        if( empty( $response['result'] ) )
+            throw new PamfaxApiException( 'Result field not found in api response!' );
+
+        $result = $response['result'];
+        unset( $response['result'] );
+
+        // check result type field not empty:
+        if( !empty( $result['code'] ) && empty( $result['type'] ) )
+            switch( $result['code'] ) {
+                case '500' : $result['type'] = 'error'; break;
+                case 'success' : $result['type'] = true; break;
+                default:
+                    throw new PamfaxApiException( 'Result type field required!' );
+                    break;
+            }
+
+        // check result for error:
+        if( $result['type'] == 'error' )
+            throw new PamfaxApiException( $result );
 
     }
 
@@ -164,9 +194,7 @@ class Api extends \yii\base\Object {
 
         switch( $this->_responseFormatCode ) {
             case \ApiClient::API_MODE_JSON:
-                $raw = Json::decode( $raw );
-                $response = ( !empty( $raw['result'] ) )?
-                    $raw[ 'result' ]: $raw;
+                $response = Json::decode( $raw );
                 break;
             case \ApiClient::API_MODE_XML:
                 $response = \ApiClient::ParseXmlResult( $raw );
@@ -178,10 +206,6 @@ class Api extends \yii\base\Object {
                 throw new PamfaxApiException("Invalid response format code" );
                 break;
         }
-
-        // fix api bug with empty type in error:
-        if( !empty( $response['code'] ) && $response['code'] == '500' && empty( $response['type'] ) )
-            $response['type'] = 'error';
 
         return $response;
 
