@@ -48,6 +48,23 @@ class Api extends \yii\base\Object {
     const MAP_KEY = 'api-map';
     const MAP_COMMAND = 'Map';
 
+    const ACTION_VERIFY_USER = 'Session/VerifyUser';
+    const ACTION_LOGIN_IDENTIFIER = 'Session/CreateLoginIdentifier';
+    const ACTION_CREATE_USER = 'UserInfo/CreateUser';
+    const ACTION_CHECK_UNIQUE = 'UserInfo/ValidateNewUsername';
+    const ACTION_PROFILE = 'UserInfo/ListProfiles';
+
+    const CODE_INVALID_PASSWORD = 'bad_password';
+    const CODE_USER_ALREADY_EXIST = 'user_email_already_exist';
+
+    const PARAM_TOKEN = 'usertoken';
+    const PARAM_TIME = 'timetolifeminutes';
+
+    const RESPONSE_IDENTIFIER = 'UserIdentifier';
+    const RESPONSE_USER = 'User';
+    const RESPONSE_PROFILE = 'UserProfile';
+    const RESPONSE_TOKEN = 'UserToken';
+
     /**
      * @inheritdoc
      *
