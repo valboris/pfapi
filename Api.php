@@ -52,6 +52,7 @@ class Api extends \yii\base\Object {
     const ACTION_LOGIN_IDENTIFIER = 'Session/CreateLoginIdentifier';
     const ACTION_CREATE_USER = 'UserInfo/CreateUser';
     const ACTION_VERIFY_PASSWORD = 'UserInfo/VerifyPassword';
+    const ACTION_RESET_PASSWORD = 'UserInfo/SendPasswordResetMessage';
     const ACTION_CHECK_UNIQUE = 'UserInfo/ValidateNewUsername';
     const ACTION_PROFILE = 'UserInfo/ListProfiles';
 
@@ -60,6 +61,7 @@ class Api extends \yii\base\Object {
     const CODE_USER_ALREADY_EXIST = 'user_email_already_exist';
 
     const PARAM_TOKEN = 'usertoken';
+    const PARAM_USERNAME = 'username';
     const PARAM_PASSWORD = 'password';
     const PARAM_TIME = 'timetolifeminutes';
 
