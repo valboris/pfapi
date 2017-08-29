@@ -39,6 +39,7 @@ class PamfaxApiException extends Exception {
             if( is_int( (int) $this->responseCode ) )
                 $code = (int) $this->responseCode;
         }
+        $message = \Yii::t( Api::I18N_ERROR, $message );
         return parent::__construct( $message, $code, $previous );
 
     }

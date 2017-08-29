@@ -70,6 +70,15 @@ class Api extends \yii\base\Object {
     const RESPONSE_PROFILE = 'UserProfile';
     const RESPONSE_TOKEN = 'UserToken';
 
+    const I18N_ERROR = 'pamfax/api/error';
+
+    const ERROR_DEFAULT = 'Sorry, we have some error by pamfax api request';
+    const ERROR_EMAIL_IN_USE = 'This email already in use by Pamfax API! Please, try another';
+    const ERROR_NOT_FOUND_RESPONSE_USER = 'User data not found in pamfax response!';
+    const ERROR_NOT_FOUND_RESPONSE_TOKEN = 'User token not found in Pamfax API response!';
+    const ERROR_NOT_FOUND_RESPONSE_PROFILE = 'User profile not found in Pamfax API response';
+    const ERROR_NOT_FOUND_RESPONSE_IDENTIFIER = 'User identifier not found in Pamfax API response';
+
     /**
      * @inheritdoc
      *
