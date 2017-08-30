@@ -6,7 +6,6 @@
  * Time: 15.10
  */
 return [
-    'pamfax*' => [
         'class' => 'yii\i18n\PhpMessageSource',
         'basePath' => __DIR__
 //        'fileMap' => [
@@ -14,5 +13,4 @@ return [
 //            'app/titles'    => 'titles.php',
 //            'app/error'     => 'error.php',
 //        ]
-    ]
 ];

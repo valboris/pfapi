@@ -15,7 +15,7 @@ class Bootstrap implements BootstrapInterface {
     /** @param \yii\web\Application $app */
     public function bootstrap( $app ) {
 
-        $app->i18n->translations[] = require( __DIR__ . '/locale/translate.php' );
+        $app->i18n->translations['pamfax*'] = require( __DIR__ . '/locale/translate.php' );
 
         require_once( dirname(__FILE__) . "/lib/apiclient.class.php");
         require_once( dirname(__FILE__) . "/lib/apierror.class.php");
