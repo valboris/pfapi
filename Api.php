@@ -72,8 +72,14 @@ class Api extends \yii\base\Object {
 
     const I18N_ERROR = 'pamfax/api/error';
 
-    const ERROR_DEFAULT = 'Sorry, we have some error by pamfax api request';
+    const ERROR_DEFAULT = 'Sorry, we have some error by Pamfax API request';
+    const ERROR_INVALID_TYPE = "Pamfax API must have static or instance type only.";
+    const ERROR_INVALID_CONFIG = "Pamfax API config required key, secret, and url fields or active profile config.";
+    const ERROR_INVALID_PROFILE = "Pamfax API config for profile '{0}' not found!";
+    const ERROR_CONFIG_KEY_NOT_FOUND = "Pamfax API '{key}' config not found for profile '{profile}'!";
     const ERROR_EMAIL_IN_USE = 'This email already in use by Pamfax API! Please, try another';
+    const ERROR_COMMAND_NOT_SUPPORTED = "Command {0} which this params not supported by Byfax API";
+    const ERROR_FORMAT_NOT_SUPPORTED = "Not supported response format type: {0}";
     const ERROR_NOT_FOUND_RESPONSE_USER = 'User data not found in pamfax response!';
     const ERROR_NOT_FOUND_RESPONSE_TOKEN = 'User token not found in Pamfax API response!';
     const ERROR_NOT_FOUND_RESPONSE_PROFILE = 'User profile not found in Pamfax API response';
@@ -93,7 +99,7 @@ class Api extends \yii\base\Object {
             case 'instance': $this->useInstance(); break;
             default:
                 throw new InvalidConfigException(
-                    "ByFax API must have static or instance type only."
+                    Yii::t( self::I18N_ERROR, self::ERROR_INVALID_TYPE )
                 );
             break;
         }
@@ -138,7 +144,7 @@ class Api extends \yii\base\Object {
         if( !$this->validateRequest( $command, $params ) )
             // todo throw more informative message
             throw new NotSupportedException(
-                "Command $command which this params not supported by Byfax API"
+                Yii::t( self::I18N_ERROR, self::ERROR_COMMAND_NOT_SUPPORTED, $command )
             );
 
         // prepare environments before request:
@@ -169,7 +175,7 @@ class Api extends \yii\base\Object {
 
         // check result field not empty:
         if( empty( $response['result'] ) )
-            throw new PamfaxApiException( 'Result field not found in api response!' );
+            throw new PamfaxApiException( PamfaxApiException::RESULT_NOT_FOUND );
 
         $result = $response['result'];
         unset( $response['result'] );
@@ -182,7 +188,7 @@ class Api extends \yii\base\Object {
                     $result['type'] = 'error'; break;
                 case 'success' : $result['type'] = true; break;
                 default:
-                    throw new PamfaxApiException( 'Result type field required!' );
+                    throw new PamfaxApiException( PamfaxApiException::RESULT_TYPE_NOT_FOUND );
                     break;
             }
 
@@ -236,7 +242,7 @@ class Api extends \yii\base\Object {
                 $response = $raw;
                 break;
             default:
-                throw new PamfaxApiException("Invalid response format code" );
+                throw new PamfaxApiException( PamfaxApiException::INVALID_FORMAT );
                 break;
         }
 
@@ -262,7 +268,9 @@ class Api extends \yii\base\Object {
                 $this->_responseFormatCode = \ApiClient::API_MODE_OBJECT;
                 break;
             default:
-                throw new NotSupportedException( "Not supported response format type: $this->responseFormat" );
+                throw new NotSupportedException(
+                    Yii::t( self::I18N_ERROR, self::ERROR_FORMAT_NOT_SUPPORTED, $this->responseFormat )
+                );
                 break;
         }
     }
@@ -300,7 +308,7 @@ class Api extends \yii\base\Object {
         if( empty( $this->activeProfile ) )
             if( !$this->validateProfile() ) {
                 throw new InvalidConfigException(
-                    "ByFax API config required key, secret, and url fields or active profile config."
+                    Yii::t( self::I18N_ERROR, self::ERROR_INVALID_CONFIG )
                 );
             } else {
                 $this->activeProfile = 'default';
@@ -310,7 +318,7 @@ class Api extends \yii\base\Object {
         if( empty( $this->profiles[ $this->activeProfile ] ) )
             if( !$this->validateProfile() ) {
                 throw new InvalidConfigException(
-                    "ByFax API config for profile '$this->activeProfile' not found!"
+                    Yii::t( self::I18N_ERROR, self::ERROR_INVALID_PROFILE, $this->activeProfile )
                 );
             } else
                 return $this;
@@ -322,7 +330,11 @@ class Api extends \yii\base\Object {
                 $this->$key = $mode[ $key ];
             if( empty( $this->$key ) )
                 throw new InvalidConfigException(
-                    "ByFax API '$key' config not found for profile '$this->activeProfile'!"
+                    Yii::t(
+                        self::I18N_ERROR,
+                        self::ERROR_CONFIG_KEY_NOT_FOUND,
+                        [ 'key' => $key, 'profile' => $this->activeProfile ]
+                    )
                 );
         }
 

@@ -15,6 +15,9 @@ class PamfaxApiException extends Exception {
     public $responseCode;
 
     const DEFAULT_MESSAGE = "Pamfax API response with non comment error";
+    const RESULT_NOT_FOUND = "Result field not found in api response!";
+    const RESULT_TYPE_NOT_FOUND = "Result type field required!";
+    const INVALID_FORMAT = "Invalid response format code";
 
     /**
      * @return string the user-friendly name of this exception
