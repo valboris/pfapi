@@ -49,6 +49,7 @@ class Api extends \yii\base\Object {
     const MAP_COMMAND = 'Map';
 
     const ACTION_VERIFY_USER = 'Session/VerifyUser';
+    const ACTION_CURRENCY = 'Common/GetFormattedPrice';
     const ACTION_LOGIN_IDENTIFIER = 'Session/CreateLoginIdentifier';
     const ACTION_CREATE_USER = 'UserInfo/CreateUser';
     const ACTION_VERIFY_PASSWORD = 'UserInfo/VerifyPassword';
@@ -69,6 +70,7 @@ class Api extends \yii\base\Object {
     const RESPONSE_USER = 'User';
     const RESPONSE_PROFILE = 'UserProfile';
     const RESPONSE_TOKEN = 'UserToken';
+    const RESPONSE_CURRENCY = 'CurCode';
 
     const I18N_ERROR = 'pamfax/api/error';
 
@@ -80,6 +82,7 @@ class Api extends \yii\base\Object {
     const ERROR_EMAIL_IN_USE = 'This email already in use by Pamfax API! Please, try another';
     const ERROR_COMMAND_NOT_SUPPORTED = "Command {0} which this params not supported by Byfax API";
     const ERROR_FORMAT_NOT_SUPPORTED = "Not supported response format type: {0}";
+    const ERROR_NOT_FOUND_RESPONSE_CURRENCY = 'Currency data not found in pamfax response!';
     const ERROR_NOT_FOUND_RESPONSE_USER = 'User data not found in pamfax response!';
     const ERROR_NOT_FOUND_RESPONSE_TOKEN = 'User token not found in Pamfax API response!';
     const ERROR_NOT_FOUND_RESPONSE_PROFILE = 'User profile not found in Pamfax API response';
