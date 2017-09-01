@@ -89,6 +89,7 @@ class Api extends \yii\base\Object {
     const ERROR_COMMAND_NOT_SUPPORTED = "Command {0} which this params not supported by Byfax API";
     const ERROR_FORMAT_NOT_SUPPORTED = "Not supported response format type: {0}";
     const ERROR_NOT_FOUND_RESPONSE_CURRENCY = 'Currency data not found in pamfax response!';
+    const ERROR_NOT_FOUND_RESPONSE_PRICE = 'Price data not found in pamfax response!';
     const ERROR_NOT_FOUND_RESPONSE_USER = 'User data not found in pamfax response!';
     const ERROR_NOT_FOUND_RESPONSE_TOKEN = 'User token not found in Pamfax API response!';
     const ERROR_NOT_FOUND_RESPONSE_PROFILE = 'User profile not found in Pamfax API response';
