@@ -50,6 +50,7 @@ class Api extends \yii\base\Object {
 
     const ACTION_VERIFY_USER = 'Session/VerifyUser';
     const ACTION_NUMBER_INFO = 'NumberInfo/GetNumberInfo';
+    const ACTION_PAGE_PRICE = 'NumberInfo/GetPagePrice';
     const ACTION_CURRENCY = 'Common/GetFormattedPrice';
     const ACTION_LOGIN_IDENTIFIER = 'Session/CreateLoginIdentifier';
     const ACTION_CREATE_USER = 'UserInfo/CreateUser';
