@@ -49,6 +49,7 @@ class Api extends \yii\base\Object {
     const MAP_COMMAND = 'Map';
 
     const ACTION_VERIFY_USER = 'Session/VerifyUser';
+    const ACTION_NUMBER_INFO = 'NumberInfo/GetNumberInfo';
     const ACTION_CURRENCY = 'Common/GetFormattedPrice';
     const ACTION_LOGIN_IDENTIFIER = 'Session/CreateLoginIdentifier';
     const ACTION_CREATE_USER = 'UserInfo/CreateUser';
@@ -58,11 +59,14 @@ class Api extends \yii\base\Object {
     const ACTION_PROFILE = 'UserInfo/ListProfiles';
 
     const CODE_SUCCESS = 'success';
+    const CODE_NOT_FOUND = 'not_found';
     const CODE_INVALID_PASSWORD = 'bad_password';
     const CODE_USER_ALREADY_EXIST = 'user_email_already_exist';
 
     const PARAM_TOKEN = 'usertoken';
     const PARAM_USERNAME = 'username';
+    const PARAM_NUMBER = 'faxnumber';
+    const PARAM_LANGUAGE = 'language_code';
     const PARAM_PASSWORD = 'password';
     const PARAM_TIME = 'timetolifeminutes';
 
@@ -71,6 +75,8 @@ class Api extends \yii\base\Object {
     const RESPONSE_PROFILE = 'UserProfile';
     const RESPONSE_TOKEN = 'UserToken';
     const RESPONSE_CURRENCY = 'CurCode';
+    const RESPONSE_PRICE = 'Price';
+    const RESPONSE_STRINGS = 'PortalStrings';
 
     const I18N_ERROR = 'pamfax/api/error';
 
