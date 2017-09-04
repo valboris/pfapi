@@ -64,6 +64,7 @@ class Api extends \yii\base\Object {
     const CODE_INVALID_PASSWORD = 'bad_password';
     const CODE_USER_ALREADY_EXIST = 'user_email_already_exist';
 
+    const PARAM_IP = 'ip';
     const PARAM_TOKEN = 'usertoken';
     const PARAM_USERNAME = 'username';
     const PARAM_NUMBER = 'faxnumber';
@@ -95,6 +96,7 @@ class Api extends \yii\base\Object {
     const ERROR_NOT_FOUND_RESPONSE_TOKEN = 'User token not found in Pamfax API response!';
     const ERROR_NOT_FOUND_RESPONSE_PROFILE = 'User profile not found in Pamfax API response';
     const ERROR_NOT_FOUND_RESPONSE_IDENTIFIER = 'User identifier not found in Pamfax API response';
+    const ERROR_NOT_FOUND_RESPONSE_STRINGS = 'Portal strings not found in Pamfax API response';
 
     /**
      * @inheritdoc
