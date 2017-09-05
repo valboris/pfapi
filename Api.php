@@ -48,6 +48,7 @@ class Api extends \yii\base\Object {
     const MAP_KEY = 'api-map';
     const MAP_COMMAND = 'Map';
 
+    const ACTION_DEV_REGISTRY = 'Account/Register';
     const ACTION_VERIFY_USER = 'Session/VerifyUser';
     const ACTION_NUMBER_INFO = 'NumberInfo/GetNumberInfo';
     const ACTION_PAGE_PRICE = 'NumberInfo/GetPagePrice';
@@ -208,6 +209,7 @@ class Api extends \yii\base\Object {
             switch( $result['code'] ) {
                 case '500' :
                 case '403' :
+                case '404' :
                     $result['type'] = 'error'; break;
                 case 'success' : $result['type'] = true; break;
                 default:
