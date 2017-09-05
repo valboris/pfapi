@@ -101,6 +101,7 @@ class Api extends \yii\base\Object {
     const ERROR_NOT_FOUND_RESPONSE_PROFILE = 'User profile not found in Pamfax API response';
     const ERROR_NOT_FOUND_RESPONSE_IDENTIFIER = 'User identifier not found in Pamfax API response';
     const ERROR_NOT_FOUND_RESPONSE_STRINGS = 'Portal strings not found in Pamfax API response';
+    const ERROR_NOT_FOUND_RESPONSE_COUNTRIES = 'List of countries not found in Pamfax API response';
 
     /**
      * @inheritdoc
