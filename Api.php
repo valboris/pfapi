@@ -57,6 +57,7 @@ class Api extends \yii\base\Object {
     const ACTION_VERIFY_PASSWORD = 'UserInfo/VerifyPassword';
     const ACTION_RESET_PASSWORD = 'UserInfo/SendPasswordResetMessage';
     const ACTION_CHECK_UNIQUE = 'UserInfo/ValidateNewUsername';
+    const ACTION_COUNTRIES = 'Common/ListCountries';
     const ACTION_COUNTRIES_PRICES = 'Common/ListCountriesPrices';
     const ACTION_PROFILE = 'UserInfo/ListProfiles';
 
@@ -66,6 +67,7 @@ class Api extends \yii\base\Object {
     const CODE_USER_ALREADY_EXIST = 'user_email_already_exist';
 
     const PARAM_IP = 'ip';
+    const PARAM_CULTURE = 'culture';
     const PARAM_TOKEN = 'usertoken';
     const PARAM_USERNAME = 'username';
     const PARAM_NUMBER = 'faxnumber';
@@ -80,6 +82,7 @@ class Api extends \yii\base\Object {
     const RESPONSE_CURRENCY = 'CurCode';
     const RESPONSE_PRICE = 'Price';
     const RESPONSE_STRINGS = 'PortalStrings';
+    const RESPONSE_COUNTRIES = 'CountryList';
 
     const I18N_ERROR = 'pamfax/api/error';
 
