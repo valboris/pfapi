@@ -58,16 +58,19 @@ class Api extends \yii\base\Object {
     const ACTION_RESET_PASSWORD = 'UserInfo/SendPasswordResetMessage';
     const ACTION_CHECK_UNIQUE = 'UserInfo/ValidateNewUsername';
     const ACTION_COUNTRIES = 'Common/ListCountries';
+    const ACTION_STATES = 'Common/ListCountryStates';
     const ACTION_COUNTRIES_PRICES = 'Common/ListCountriesPrices';
     const ACTION_PROFILE = 'UserInfo/ListProfiles';
 
     const CODE_SUCCESS = 'success';
     const CODE_NOT_FOUND = 'not_found';
+    const CODE_NO_STATES = 'country_has_no_states';
     const CODE_INVALID_PASSWORD = 'bad_password';
     const CODE_USER_ALREADY_EXIST = 'user_email_already_exist';
 
     const PARAM_IP = 'ip';
     const PARAM_CULTURE = 'culture';
+    const PARAM_COUNTRY_CODE = 'country_code';
     const PARAM_TOKEN = 'usertoken';
     const PARAM_USERNAME = 'username';
     const PARAM_NUMBER = 'faxnumber';
@@ -83,6 +86,7 @@ class Api extends \yii\base\Object {
     const RESPONSE_PRICE = 'Price';
     const RESPONSE_STRINGS = 'PortalStrings';
     const RESPONSE_COUNTRIES = 'CountryList';
+    const RESPONSE_STATES = 'StatesList';
 
     const I18N_ERROR = 'pamfax/api/error';
 
@@ -102,6 +106,7 @@ class Api extends \yii\base\Object {
     const ERROR_NOT_FOUND_RESPONSE_IDENTIFIER = 'User identifier not found in Pamfax API response';
     const ERROR_NOT_FOUND_RESPONSE_STRINGS = 'Portal strings not found in Pamfax API response';
     const ERROR_NOT_FOUND_RESPONSE_COUNTRIES = 'List of countries not found in Pamfax API response';
+    const ERROR_NOT_FOUND_RESPONSE_STATES = 'List of states not found in Pamfax API response';
 
     /**
      * @inheritdoc
