@@ -49,6 +49,7 @@ class Api extends \yii\base\Object {
     const MAP_COMMAND = 'Map';
 
     const ACTION_SHOP_LINK = 'Shopping/GetShopLink';
+    const ACTION_CREDITS = 'Shopping/ListAvailableItems';
     const ACTION_DEV_REGISTRY = 'Account/Register';
     const ACTION_VERIFY_USER = 'Session/VerifyUser';
     const ACTION_NUMBER_INFO = 'NumberInfo/GetNumberInfo';
@@ -84,6 +85,8 @@ class Api extends \yii\base\Object {
     const PARAM_TIME = 'timetolifeminutes';
 
     const RESPONSE_IDENTIFIER = 'UserIdentifier';
+    const RESPONSE_CREDIT_PACKS = 'CreditPacks';
+    const RESPONSE_PLANS = 'Plans';
     const RESPONSE_SHOP_LINK = 'ShopLink';
     const RESPONSE_USER = 'User';
     const RESPONSE_PROFILE = 'UserProfile';
@@ -114,6 +117,8 @@ class Api extends \yii\base\Object {
     const ERROR_NOT_FOUND_RESPONSE_COUNTRIES = 'List of countries not found in Pamfax API response';
     const ERROR_NOT_FOUND_RESPONSE_STATES = 'List of states not found in Pamfax API response';
     const ERROR_NOT_FOUND_RESPONSE_SHOP_LINK = 'Shop link not found in Pamfax API response';
+    const ERROR_NOT_FOUND_RESPONSE_CREDIT_PACKS = 'Credit packs not found in Pamfax API response';
+    const ERROR_NOT_FOUND_RESPONSE_PLANS = 'Plans not found in Pamfax API response';
 
     /**
      * @inheritdoc
