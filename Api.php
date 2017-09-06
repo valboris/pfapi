@@ -48,6 +48,7 @@ class Api extends \yii\base\Object {
     const MAP_KEY = 'api-map';
     const MAP_COMMAND = 'Map';
 
+    const ACTION_SHOP_LINK = 'Shopping/GetShopLink';
     const ACTION_DEV_REGISTRY = 'Account/Register';
     const ACTION_VERIFY_USER = 'Session/VerifyUser';
     const ACTION_NUMBER_INFO = 'NumberInfo/GetNumberInfo';
@@ -70,6 +71,9 @@ class Api extends \yii\base\Object {
     const CODE_USER_ALREADY_EXIST = 'user_email_already_exist';
 
     const PARAM_IP = 'ip';
+    const PARAM_PAY = 'pay';
+    const PARAM_TYPE = 'type';
+    const PARAM_PRODUCT = 'product';
     const PARAM_CULTURE = 'culture';
     const PARAM_COUNTRY_CODE = 'country_code';
     const PARAM_TOKEN = 'usertoken';
@@ -80,6 +84,7 @@ class Api extends \yii\base\Object {
     const PARAM_TIME = 'timetolifeminutes';
 
     const RESPONSE_IDENTIFIER = 'UserIdentifier';
+    const RESPONSE_SHOP_LINK = 'ShopLink';
     const RESPONSE_USER = 'User';
     const RESPONSE_PROFILE = 'UserProfile';
     const RESPONSE_TOKEN = 'UserToken';
@@ -108,6 +113,7 @@ class Api extends \yii\base\Object {
     const ERROR_NOT_FOUND_RESPONSE_STRINGS = 'Portal strings not found in Pamfax API response';
     const ERROR_NOT_FOUND_RESPONSE_COUNTRIES = 'List of countries not found in Pamfax API response';
     const ERROR_NOT_FOUND_RESPONSE_STATES = 'List of states not found in Pamfax API response';
+    const ERROR_NOT_FOUND_RESPONSE_SHOP_LINK = 'Shop link not found in Pamfax API response';
 
     /**
      * @inheritdoc
