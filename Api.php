@@ -107,18 +107,7 @@ class Api extends \yii\base\Object {
     const ERROR_EMAIL_IN_USE = 'This email already in use by Pamfax API! Please, try another';
     const ERROR_COMMAND_NOT_SUPPORTED = "Command {0} which this params not supported by Byfax API";
     const ERROR_FORMAT_NOT_SUPPORTED = "Not supported response format type: {0}";
-    const ERROR_NOT_FOUND_RESPONSE_CURRENCY = 'Currency data not found in pamfax response!';
-    const ERROR_NOT_FOUND_RESPONSE_PRICE = 'Price data not found in pamfax response!';
-    const ERROR_NOT_FOUND_RESPONSE_USER = 'User data not found in pamfax response!';
-    const ERROR_NOT_FOUND_RESPONSE_TOKEN = 'User token not found in Pamfax API response!';
-    const ERROR_NOT_FOUND_RESPONSE_PROFILE = 'User profile not found in Pamfax API response';
-    const ERROR_NOT_FOUND_RESPONSE_IDENTIFIER = 'User identifier not found in Pamfax API response';
-    const ERROR_NOT_FOUND_RESPONSE_STRINGS = 'Portal strings not found in Pamfax API response';
-    const ERROR_NOT_FOUND_RESPONSE_COUNTRIES = 'List of countries not found in Pamfax API response';
-    const ERROR_NOT_FOUND_RESPONSE_STATES = 'List of states not found in Pamfax API response';
-    const ERROR_NOT_FOUND_RESPONSE_SHOP_LINK = 'Shop link not found in Pamfax API response';
-    const ERROR_NOT_FOUND_RESPONSE_CREDIT_PACKS = 'Credit packs not found in Pamfax API response';
-    const ERROR_NOT_FOUND_RESPONSE_PLANS = 'Plans not found in Pamfax API response';
+    const ERROR_NOT_FOUND_RESPONSE_FIELD = 'Field {1} not found in pamfax response!';
 
     /**
      * @inheritdoc
