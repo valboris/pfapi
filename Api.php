@@ -51,6 +51,7 @@ class Api extends \yii\base\Object {
     const ACTION_SHOP_LINK = 'Shopping/GetShopLink';
     const ACTION_CREDITS = 'Shopping/ListAvailableItems';
     const ACTION_FAX_COUNTRIES = 'Shopping/ListFaxInCountries';
+    const ACTION_FAX_AREAS = 'Shopping/ListFaxInAreacodes';
     const ACTION_DEV_REGISTRY = 'Account/Register';
     const ACTION_VERIFY_USER = 'Session/VerifyUser';
     const ACTION_NUMBER_INFO = 'NumberInfo/GetNumberInfo';
@@ -78,6 +79,7 @@ class Api extends \yii\base\Object {
     const PARAM_PRODUCT = 'product';
     const PARAM_CULTURE = 'culture';
     const PARAM_COUNTRY_CODE = 'country_code';
+    const PARAM_STATE = 'state';
     const PARAM_TOKEN = 'usertoken';
     const PARAM_USERNAME = 'username';
     const PARAM_NUMBER = 'faxnumber';
@@ -99,6 +101,7 @@ class Api extends \yii\base\Object {
     const RESPONSE_FAX_COUNTRIES = 'FaxInCountries';
     const RESPONSE_STATES = 'StatesList';
     const RESPONSE_FAX_STATES = 'FaxInStates';
+    const RESPONSE_FAX_AREAS = 'AreaCodes';
 
     const I18N_ERROR = 'pamfax/api/error';
 
