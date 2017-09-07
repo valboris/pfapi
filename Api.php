@@ -98,6 +98,7 @@ class Api extends \yii\base\Object {
     const RESPONSE_COUNTRIES = 'CountryList';
     const RESPONSE_FAX_COUNTRIES = 'FaxInCountries';
     const RESPONSE_STATES = 'StatesList';
+    const RESPONSE_FAX_STATES = 'FaxInStates';
 
     const I18N_ERROR = 'pamfax/api/error';
 
