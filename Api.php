@@ -72,6 +72,7 @@ class Api extends \yii\base\Object {
     const CODE_NO_STATES = 'country_has_no_states';
     const CODE_INVALID_PASSWORD = 'bad_password';
     const CODE_USER_ALREADY_EXIST = 'user_email_already_exist';
+    const CODE_USER_NOT_FOUND = 'user_not_found';
 
     const PARAM_IP = 'ip';
     const PARAM_PAY = 'pay';
