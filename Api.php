@@ -66,6 +66,7 @@ class Api extends \yii\base\Object {
     const ACTION_STATES = 'Common/ListCountryStates';
     const ACTION_COUNTRIES_PRICES = 'Common/ListCountriesPrices';
     const ACTION_PROFILE = 'UserInfo/ListProfiles';
+    const ACTION_INBOX_NUMBERS = 'UserInfo/ListInboxes';
 
     const CODE_SUCCESS = 'success';
     const CODE_NOT_FOUND = 'not_found';
@@ -87,6 +88,8 @@ class Api extends \yii\base\Object {
     const PARAM_LANGUAGE = 'language_code';
     const PARAM_PASSWORD = 'password';
     const PARAM_TIME = 'timetolifeminutes';
+    const PARAM_EXPIRED = 'expired_too';
+    const PARAM_SHARED = 'shared_too';
 
     const RESPONSE_IDENTIFIER = 'UserIdentifier';
     const RESPONSE_CREDIT_PACKS = 'CreditPacks';
@@ -100,6 +103,7 @@ class Api extends \yii\base\Object {
     const RESPONSE_STRINGS = 'PortalStrings';
     const RESPONSE_COUNTRIES = 'CountryList';
     const RESPONSE_FAX_COUNTRIES = 'FaxInCountries';
+    const RESPONSE_INBOX_NUMBERS = 'FaxInNumberList';
     const RESPONSE_STATES = 'StatesList';
     const RESPONSE_FAX_STATES = 'FaxInStates';
     const RESPONSE_FAX_AREAS = 'AreaCodes';
