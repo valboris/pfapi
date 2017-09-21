@@ -49,6 +49,7 @@ class Api extends \yii\base\Object {
     const MAP_COMMAND = 'Map';
 
     const ACTION_SHOP_LINK = 'Shopping/GetShopLink';
+    const ACTION_FAXES_COUNT = 'FaxHistory/CountFaxes';
     const ACTION_CREDITS = 'Shopping/ListAvailableItems';
     const ACTION_FAX_COUNTRIES = 'Shopping/ListFaxInCountries';
     const ACTION_FAX_AREAS = 'Shopping/ListFaxInAreacodes';
@@ -107,6 +108,7 @@ class Api extends \yii\base\Object {
     const RESPONSE_STATES = 'StatesList';
     const RESPONSE_FAX_STATES = 'FaxInStates';
     const RESPONSE_FAX_AREAS = 'AreaCodes';
+    const RESPONSE_FAXES = 'Faxes';
 
     const I18N_ERROR = 'pamfax/api/error';
 
