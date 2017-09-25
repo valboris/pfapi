@@ -98,6 +98,7 @@ class Api extends \yii\base\Object {
     const RESPONSE_SHOP_LINK = 'ShopLink';
     const RESPONSE_USER = 'User';
     const RESPONSE_PROFILE = 'UserProfile';
+    const RESPONSE_SKYPE_PROFILE = 'SkypeProfile';
     const RESPONSE_TOKEN = 'UserToken';
     const RESPONSE_CURRENCY = 'CurCode';
     const RESPONSE_PRICE = 'Price';
