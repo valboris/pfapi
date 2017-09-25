@@ -60,6 +60,7 @@ class Api extends \yii\base\Object {
     const ACTION_CURRENCY = 'Common/GetFormattedPrice';
     const ACTION_LOGIN_IDENTIFIER = 'Session/CreateLoginIdentifier';
     const ACTION_CREATE_USER = 'UserInfo/CreateUser';
+    const ACTION_SEND_MESSAGE = 'UserInfo/SendMessage';
     const ACTION_VERIFY_PASSWORD = 'UserInfo/VerifyPassword';
     const ACTION_RESET_PASSWORD = 'UserInfo/SendPasswordResetMessage';
     const ACTION_CHECK_UNIQUE = 'UserInfo/ValidateNewUsername';
@@ -79,6 +80,9 @@ class Api extends \yii\base\Object {
     const PARAM_IP = 'ip';
     const PARAM_PAY = 'pay';
     const PARAM_TYPE = 'type';
+    const PARAM_BODY = 'body';
+    const PARAM_RECIPIENT = 'recipient';
+    const PARAM_SUBJECT = 'subject';
     const PARAM_PRODUCT = 'product';
     const PARAM_CULTURE = 'culture';
     const PARAM_COUNTRY_CODE = 'country_code';
