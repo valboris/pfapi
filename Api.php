@@ -180,7 +180,11 @@ class Api extends \yii\base\Object {
      * @return array|bool|mixed|string
      * @throws NotSupportedException
      */
-    public function request( string $command, array $params = [], $useCache = null ) {
+    public function request(
+        string $command,
+        array $params = [],
+        bool $useCache = null,
+        bool $parseResponse = true ) {
 
         // validate command and params before request:
         if( !$this->validateRequest( $command, $params ) )
@@ -198,6 +202,8 @@ class Api extends \yii\base\Object {
 
         // run request:
         $raw = \ApiClient::StaticApi( $command, $params, $useCache );
+        if( !$parseResponse ) return $raw;
+
         // parse response:
         $response = $this->parseResponse( $raw );
         // check and unset response result:
