@@ -173,8 +173,7 @@ class ApiClient
 		return $arrayVals;
 	}
 
-	private function _request($url, $postdata = null, $timeout = 120, $redirected=false)
-	{
+	private function _request( $url, $postdata = null, $timeout = 120, $redirected = false ) {
 		global $PAMFAX_API_URL, $PAMFAX_API_APPLICATION, $PAMFAX_API_SECRET_WORD;
 
 		if( $PAMFAX_API_URL == "" || $PAMFAX_API_APPLICATION == "" || $PAMFAX_API_SECRET_WORD == "" )
@@ -195,24 +194,25 @@ class ApiClient
 		$headers = array (
 			'Keep-Alive: 300',
 			'Connection: Keep-Alive',
-			'X-ClientIP: '.(isset($_SERVER['REMOTE_ADDR'])?$_SERVER['REMOTE_ADDR']:$_SERVER['SERVER_ADDR'])
+			'X-ClientIP: '.( isset( $_SERVER['REMOTE_ADDR'] )?
+                                $_SERVER['REMOTE_ADDR'] : $_SERVER['SERVER_ADDR'] )
 		);
 
-		if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && $_SERVER['HTTP_ACCEPT_LANGUAGE'] != "" )
-		{
-			// pass through accepted languages of client
+        // pass through accepted languages of client:
+		if( !empty($_SERVER['HTTP_ACCEPT_LANGUAGE'] ) )
 			$headers[] = 'Accept-Language: '.$_SERVER['HTTP_ACCEPT_LANGUAGE'];
-		}
+
 		// pass the geolocation language of the user to api
-		if(isset($GLOBALS["user_geoip_language"]))
+		if( !empty($GLOBALS["user_geoip_language"] ) )
 			$headers[] = 'Force-Language: '.$GLOBALS["user_geoip_language"];
-		elseif( function_exists('get_countrycode_by_ip') && $this->_class_exists("Localization"))
-		{
+		elseif(
+		    function_exists('get_countrycode_by_ip') &&
+            $this->_class_exists("Localization" )
+        ) {
 			// note: this sets the IP detected culture to the Force-Language header, which then
 			// overrides the BROWSER detected culture in Localization::getBrowserCulture()
 			$ci = Localization::getIPCulture();
-			if( $ci )
-			{
+			if( $ci ) {
 				$GLOBALS["user_geoip_language"] = $ci->Code;
 				$headers[] = 'Force-Language: '.$GLOBALS["user_geoip_language"];
 			}
@@ -220,138 +220,93 @@ class ApiClient
 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_URL, $url);
-
-		// use a cookie file to store the cookies from this request. this ensures session will stay alive on api server (optional!)
-//		$cookie_file = ini_get("session.save_path")."/".session_name()."_".session_id().".txt";
-//		curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_file);
-//		curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file);
-
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 		curl_setopt($ch, CURLOPT_USERAGENT, "PamFax APIClient PHP");
-	////PAMFAX-6347 Was added
-		if(empty($postdata)) {
+
+	    ////PAMFAX-6347 Was added
+		if( empty( $postdata ) ) {
 			$postdata = [];
-		}
-        elseif(!is_array($postdata)) {
-            parse_str($postdata, $postdata);
+            $postdata['apicheck'] = "";
+		} elseif( !is_array( $postdata ) ) {
+            parse_str( $postdata, $postdata );
+            if( empty( $postdata ) )
+                $postdata['apicheck'] = "";
         }
-////PAMFAX-6347
-		if($postdata !== null)
-		{
-			if( $GLOBALS['PAMFAX_API_MODE'] == self::API_MODE_JSON )
-				$postdata['apioutputformat'] = "API_FORMAT_JSON";
-			else
-				$postdata['apioutputformat'] = "API_FORMAT_XML";
 
-			if(isset($_SESSION["XDEBUG_PROFILE"]) && ($_SESSION["XDEBUG_PROFILE"] == 1))
-				$postdata['XDEBUG_PROFILE'] = 1;
-if ((version_compare(PHP_VERSION, '5.5') < 0)){
-			if( !$redirected )
-			{
-				$postdata['apikey']    = $PAMFAX_API_APPLICATION;
-				if(isset($GLOBALS['PAMFAX_API_USERTOKEN']))
-					$postdata['usertoken'] = $GLOBALS['PAMFAX_API_USERTOKEN'];
+        if( $GLOBALS['PAMFAX_API_MODE'] == self::API_MODE_JSON )
+            $postdata['apioutputformat'] = "API_FORMAT_JSON";
+        else
+            $postdata['apioutputformat'] = "API_FORMAT_XML";
+        if( isset( $_SESSION["XDEBUG_PROFILE"] ) && ( $_SESSION["XDEBUG_PROFILE"] == 1 ) )
+            $postdata['XDEBUG_PROFILE'] = 1;
 
-				$isfileupload = false;
-				foreach($postdata as $k => $v)
-				{
-					if(is_string($v) && (strlen($v) > 1) && ($v{0} == "@") && file_exists(substr($v, 1)))
-					{
-						$isfileupload = true;
-						if( !isset($postdata['file']) )
-						{
-						//	if ((version_compare(PHP_VERSION, '5.5') >= 0))
-							//{
-							//	$postdata['file'] = new CURLFile(substr($v,1));
-							//	curl_setopt($ch, CURLOPT_SAFE_UPLOAD, true);
-						//	} else
-							$postdata['file'] = $v;
+        ////PAMFAX-6347
+        if( (version_compare(PHP_VERSION, '5.5') < 0 ) ) {
+            if( !$redirected ) {
+                $postdata['apikey']    = $PAMFAX_API_APPLICATION;
+                if(isset($GLOBALS['PAMFAX_API_USERTOKEN']))
+                    $postdata['usertoken'] = $GLOBALS['PAMFAX_API_USERTOKEN'];
 
-							$postdata[$k] = basename(substr($v,1));
-						}
+                $isFileUpload = false;
+                foreach( $postdata as $k => $v )
+                    if( is_string( $v ) &&
+                        ( strlen( $v ) > 1 ) &&
+                        ( $v{0} == "@" ) &&
+                        file_exists( substr( $v, 1 ) ) )
+                    {
+                        $isFileUpload = true;
+                        if( !isset( $postdata['file'] ) ) {
+                            $postdata['file'] = $v;
+                            $postdata[ $k ] = basename( substr( $v,1 ) );
+                        }
+                        break;
+                    }
+                $postdata['apicheck']  =  self::CalcApiCheck($postdata, $PAMFAX_API_SECRET_WORD);
+                if(!$isFileUpload)		// only encode if no file upload
+                    $postdata = http_build_query($postdata);
+            }
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+        } else {
+            if( !$redirected )	{
+                $postdata['apikey']    = $PAMFAX_API_APPLICATION;
+                if (isset( $GLOBALS['PAMFAX_API_USERTOKEN'] ) )
+                    $postdata['usertoken'] = $GLOBALS['PAMFAX_API_USERTOKEN'];
 
-						break;
-					}
-				}
+                $isFileUpload = false;
+                foreach( $postdata as $k => $v ) {
+                    if(
+                        is_string($v) &&
+                        ( strlen($v) > 1 ) &&
+                        ( $v{0} == "@" ) &&
+                        file_exists(substr($v, 1) )
+                    ) {
+                        $isFileUpload = true;
+                        if( !isset( $postdata['file'] ) ) {
+                        ///Changes PAMFAX-6385
+                            $postdata['file'] = $v;
+                            $postdata[$k] = basename(substr($v,1));
+                        }
+                        break;
+                    }
+                }
+                ///Changes PAMFAX-6385
+                if( !empty( $postdata['file'] ) )
+                    $postdata['file'] = substr( $postdata['file'],1 );
+                if( isset( $postdata['file'] ) )
+                    $postdata['file'] = new CURLFile( $postdata['file'] );
+                ///Changes PAMFAX-6385
+                $postdata['apicheck']  =  self::CalcApiCheck( $postdata, $PAMFAX_API_SECRET_WORD );
+                if( !$isFileUpload )		// only encode if no file upload
+                    $postdata = http_build_query( $postdata );
+            } else
+                $postdata = http_build_query( $postdata );
 
-				$postdata['apicheck']  =  self::CalcApiCheck($postdata, $PAMFAX_API_SECRET_WORD);
-
-				if(!$isfileupload)		// only encode if no file upload
-					$postdata = http_build_query($postdata);
-			}
-
-			//curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
-			curl_setopt($ch, CURLOPT_POST, 1);
-//			log_debug($postdata);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
-}else {
-			if( !$redirected )
-			{
-				$postdata['apikey']    = $PAMFAX_API_APPLICATION;
-				if(isset($GLOBALS['PAMFAX_API_USERTOKEN']))
-					$postdata['usertoken'] = $GLOBALS['PAMFAX_API_USERTOKEN'];
-
-				$isfileupload = false;
-				foreach($postdata as $k => $v)
-				{
-					if(is_string($v) && (strlen($v) > 1) && ($v{0} == "@") && file_exists(substr($v, 1)))
-					{
-						$isfileupload = true;
-
-						if( !isset($postdata['file']) )
-						{
-						///Changes PAMFAX-6385
-						//	if ((version_compare(PHP_VERSION, '5.5') >= 0))
-						//	{
-						//		$postdata['file'] = new CURLFile(substr($v,1));
-						//		curl_setopt($ch, CURLOPT_SAFE_UPLOAD, true);
-						//	} else
-								//		$postdata['file'] = $v;
-						///Changes PAMFAX-6385
-							$postdata['file'] = $v;
-							$postdata[$k] = basename(substr($v,1));
-
-						}
-					break;
-					}
-				}
-				///Changes PAMFAX-6385
-				if (!empty($postdata['file']))
-					$postdata['file'] = substr($postdata['file'],1);
-				else
-					$postdata['file'] = '';
-				$postdata['file'] = new CURLFile($postdata['file']);
-				///Changes PAMFAX-6385
-
-
-				$postdata['apicheck']  =  self::CalcApiCheck($postdata, $PAMFAX_API_SECRET_WORD);
-
-				if(!$isfileupload)		// only encode if no file upload
-				$postdata = http_build_query($postdata);
-			}
-			else
-				$postdata = http_build_query($postdata);
-
-			curl_setopt($ch, CURLOPT_SAFE_UPLOAD, true);
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
-}
-
-		} else {
-			$postdata = array();
-
-			if( $GLOBALS['PAMFAX_API_MODE'] == self::API_MODE_JSON )
-				$postdata['apioutputformat'] = "API_FORMAT_JSON";
-			else
-				$postdata['apioutputformat'] = "API_FORMAT_XML";
-
-			if(isset($_SESSION["XDEBUG_PROFILE"]) && ($_SESSION["XDEBUG_PROFILE"] == 1))
-				$postdata['XDEBUG_PROFILE'] = 1;
-
-			$postdata['apicheck'] = "";
-		}
-
+            curl_setopt($ch, CURLOPT_SAFE_UPLOAD, true);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+        }
 
 		set_time_limit(intval($timeout) + 20);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -797,7 +752,7 @@ if ((version_compare(PHP_VERSION, '5.5') < 0)){
 	 * Note:
 	 * We are using an internal case here because class_exists performs auto-loading on each call.
 	 * When calling in a recusion this is not needed always but the first time, so we're buffering.
-	 * @param type $name
+	 * @param string $name
 	 */
 	private static function _class_exists($name)
 	{
