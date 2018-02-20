@@ -3,7 +3,7 @@
   "version"     : "2.0.0",
   "description" : "PamFax API Yii2 Extension",
   "keywords"    : [ "yii2", "pamfax", "api" ],
-  "license"     : "CC-0",
+  "license"     : "MIT",
   "require"     : {
     "yiisoft/yii2" : "*"
   },
