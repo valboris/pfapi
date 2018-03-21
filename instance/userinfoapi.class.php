@@ -5,9 +5,18 @@
 * The UserInfo API contains functionality to get information
 * about users and "their" faxes
 */
-class UserInfoApi extends ApiClient
-{
-	/**
+class UserInfoApi extends ApiClient {
+
+    /**
+     * Check SkypeBot connection status.
+     * @return boolean
+     *
+     */
+    public function IsSkypeBotConnected() {
+        return $this->CallApi('UserInfo/IsSkypeBotConnected',array(),true);
+    }
+
+    /**
 	* Validate a username for a new user.
 	* 
 	* Returns a list of suggestions for the username if given username is already in use. Call this prior to UserInfo/CreUser to show alternative usernames to the user if the entered username is already occupied or invalid.
