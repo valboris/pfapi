@@ -5,8 +5,16 @@
 * The UserInfo API contains functionality to get information
 * about users and "their" faxes
 */
-class UserInfoApi extends ApiClient
-{
+class UserInfoApi extends ApiClient {
+
+    /**
+     * Check SkypeBot connection status.
+     * @return boolean
+     *
+     */ public static function IsSkypeBotConnected() {
+         return self::StaticApi('UserInfo/IsSkypeBotConnected',array(),true);
+     }
+
 	/**
 	* Validate a username for a new user.
 	* 
